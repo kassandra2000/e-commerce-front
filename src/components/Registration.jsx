@@ -3,6 +3,7 @@ import { Button, Container, Form } from "react-bootstrap";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
+    username:"",
     firstName: "",
     lastName: "",
     email: "",
@@ -27,8 +28,19 @@ const Registration = () => {
     <Container className="my-5 d-flex flex-column justify-content-center align-items-center  registration w-50 border rounded">
       <h2 className="mb-5"> Registration</h2>
       <Form onSubmit={handleSubmit} className="w-50 ">
+      <Form.Group controlId="formFirstName">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter your Username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
         <Form.Group controlId="formFirstName">
-          <Form.Label>First Name</Form.Label>
+          <Form.Label className="mt-3">First Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter your first name"
