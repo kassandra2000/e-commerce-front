@@ -3,6 +3,7 @@ import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserAction } from "../redux/actions";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -69,6 +70,21 @@ const Login = () => {
               <Button variant="primary" type="submit" className="w-100">
                 Login
               </Button>
+
+              <div className="text-center mt-4">Or login with</div>
+            
+            <div className="d-flex justify-content-center my-3">
+              <Button variant="outline-primary" className="me-5">
+                <FaFacebook /> Facebook
+              </Button>
+              <Button variant="outline-danger">
+                <FaGoogle /> Google
+              </Button>
+            </div>
+
+            <div className="text-center mt-4">
+              Not a member? <a href="/registration">Sign up now</a>
+            </div>
             </Form>
           </div>
         </Col>

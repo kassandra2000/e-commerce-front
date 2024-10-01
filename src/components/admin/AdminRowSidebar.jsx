@@ -7,9 +7,7 @@ const AdminRowSidebar = () => (
       <NavLink className="side-bar " to="/admin">
         Dashboard
       </NavLink>
-      <NavLink className="side-bar " to="/message">
-        Message
-      </NavLink>
+    
       <NavLink className="side-bar " to="/order">
         Order
       </NavLink>

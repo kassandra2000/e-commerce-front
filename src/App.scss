@@ -724,23 +724,7 @@ p {
     width: 80%;
   }
 }
-/*  contact-form */
-.contact-form {
-  background: rgb(255, 255, 255);
-  background: linear-gradient(
-    20deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 1) 30%,
-    rgba(8, 129, 120, 0.3261353567744909) 51%,
-    rgba(255, 255, 255, 1) 73%,
-    rgba(255, 255, 255, 1) 100%
-  );
 
-  .contact-form-col {
-    background-color: rgb(255, 255, 255);
-    padding-bottom: 20px;
-  }
-}
 
 // details
 .details {
@@ -791,10 +775,10 @@ p {
 
 //myapp
 .read-more-section {
-  background-image: url("./assets/banner/b19.jpg"); /* Percorso dell'immagine di sfondo */
+  background-image: url("./assets/banner/b19.jpg"); 
   background-size: cover;
   background-position: center;
-  height: 50vh; /* Altezza della sezione */
+  height: 50vh; 
   position: relative;
   display: flex;
   justify-content: center;
@@ -843,12 +827,19 @@ p {
     border-radius: 6px;
   }
 }
+
+//registration
+.registration{
+  // background-color: #dbdbdb;
+    padding: 50px 0;
+}
+
+
 //admin
 //diagramma circolari
 .CircularProgressbar text {
   transform: translate(-10px, 5px); /* Adjust these values as needed */
 }
-/* DistanceCards.css */
 
 .bg-blue {
   background: linear-gradient(135deg, #6db3f2, #1e69de);

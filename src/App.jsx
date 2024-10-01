@@ -5,7 +5,6 @@ import MyNavbar from "./components/MyNavbar";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import AboutUs from "./components/AboutUs";
-import ContactForm from "./components/ContactForm";
 import NewsLetter from "./components/NewsLetter";
 import Footer from "./components/Footer";
 import Shop from "./components/Shop";
@@ -19,6 +18,8 @@ import AdminHome from "./components/admin/AdminHome";
 import AdminOrder from "./components/admin/AdminOrder";
 import AdminOrderDetails from "./components/admin/AdminOrderDetails";
 import AdminSetting from "./components/admin/AdminSetting";
+import Registration from "./components/Registration";
+import AdminCreateProduct from "./components/admin/AdminCreateProduct";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,14 +35,15 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Shop" element={<Shop />} />
           <Route path="/Details" element={<Details />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Registration" element={<Registration />} />
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="/App" element={<MyApp />} />
-          <Route path="/Contact" element={<ContactForm />} />
           <Route path="/Admin" element={<AdminHome />} />
           <Route path="/Order" element={<AdminOrder />} />
           <Route path="/OrderDetail" element={<AdminOrderDetails />} />
           <Route path="/Settings" element={<AdminSetting />} />
+          <Route path="/CreateProduct" element={<AdminCreateProduct />} />
 
           <Route path="*" element={<Home />} />
         </Routes>

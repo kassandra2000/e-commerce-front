@@ -74,9 +74,6 @@ const MyNavbar = () => {
             >
               About Us
             </NavLink>
-            <NavLink className="mx-2 nav-link" to="/Contact">
-              Contact
-            </NavLink>
             <NavLink className="mx-2 nav-link" /*to="/Login"*/ to="/Login">
               {user ? user : "Login"}
             </NavLink>

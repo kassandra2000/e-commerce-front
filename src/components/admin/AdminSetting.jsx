@@ -1,9 +1,11 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import AdminRowSidebar from "./AdminRowSidebar";
+import { useNavigate } from "react-router-dom";
 
 const AdminSetting = () => {
+  const navigate = useNavigate();
   return (
-    <Container className="mt-5 admin-setting">
+    <Container className="mt-5 admin-setting ">
         <AdminRowSidebar/>
       <h1 className="text-center mb-5 mt-4 display-4">Admin Dashboard</h1>
       <Row className="justify-content-center">
@@ -17,7 +19,7 @@ const AdminSetting = () => {
             /></div>
             <Card.Body className="text-center">
               <Card.Title>Create Product</Card.Title>
-              <Button variant="success" className="custom-button mt-3">
+              <Button variant="success" className="custom-button mt-3"onClick={()=> navigate("/CreateProduct")}>
                 Go to Create Product
               </Button>
             </Card.Body>
@@ -33,7 +35,7 @@ const AdminSetting = () => {
             /></div>
             <Card.Body className="text-center">
               <Card.Title>Edit Product</Card.Title>
-              <Button variant="success" className="custom-button mt-3">
+              <Button variant="success" className="custom-button mt-3"onClick={()=> navigate("/")}>
                 Go to Edit Product
               </Button>
             </Card.Body>
@@ -49,7 +51,7 @@ const AdminSetting = () => {
             /></div>
             <Card.Body className="text-center">
               <Card.Title>Add Admin User</Card.Title>
-              <Button variant="success" className="custom-button mt-3">
+              <Button variant="success" className="custom-button mt-3" onClick={()=> navigate("/registration")}>
                 Go to Add Admin
               </Button>
             </Card.Body>
