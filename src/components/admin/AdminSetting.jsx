@@ -35,7 +35,7 @@ const AdminSetting = () => {
             /></div>
             <Card.Body className="text-center">
               <Card.Title>Edit Product</Card.Title>
-              <Button variant="success" className="custom-button mt-3"onClick={()=> navigate("/")}>
+              <Button variant="success" className="custom-button mt-3"onClick={()=> navigate("/ModifyProduct")}>
                 Go to Edit Product
               </Button>
             </Card.Body>

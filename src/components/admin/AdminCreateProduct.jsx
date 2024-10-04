@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
-const AdminCreateProduct=()=>{
+const AdminCreateProduct=({title, button})=>{
     const [formData, setFormData] = useState({
         title: '',
         subtitle: '',
@@ -26,7 +26,7 @@ const AdminCreateProduct=()=>{
     
       return (
         <Container className="my-5 w-50  border rounded p-5">
-          <h3 className="fs-2 mb-4">Create a New Product</h3>
+          <h3 className="fs-2 mb-4">{title}</h3>
           <Form onSubmit={handleSubmit}>
             <Form.Group as={Row} controlId="formTitle" className="mb-3">
               <Form.Label column sm="2">Title</Form.Label>
@@ -101,7 +101,7 @@ const AdminCreateProduct=()=>{
             </Form.Group>
     
             <Button variant="success" type="submit">
-              Create Product
+              {button}
             </Button>
           </Form>
         </Container>

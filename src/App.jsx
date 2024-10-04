@@ -43,8 +43,24 @@ function App() {
           <Route path="/Order" element={<AdminOrder />} />
           <Route path="/OrderDetail" element={<AdminOrderDetails />} />
           <Route path="/Settings" element={<AdminSetting />} />
-          <Route path="/CreateProduct" element={<AdminCreateProduct />} />
-
+          <Route
+            path="/CreateProduct"
+            element={
+              <AdminCreateProduct
+                title="Create a New Product"
+                button="Create Product"
+              />
+            }
+          />
+<Route
+            path="/ModifyProduct"
+            element={
+              <AdminCreateProduct
+                title="Modify Product"
+                button="Modify Product"
+              />
+            }
+          />
           <Route path="*" element={<Home />} />
         </Routes>
         <NewsLetter />

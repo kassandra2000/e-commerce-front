@@ -1,8 +1,29 @@
 import { Badge, Container, Table } from "react-bootstrap";
 import AdminOrderRow from "./AdminOrderRow";
 import AdminRowSidebar from "./AdminRowSidebar";
+import { useEffect, useState } from "react";
+import { GetService } from "../../services/index.service";
 
 const AdminOrder = () => {
+  const [orders, setOrders] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    if (orders.length > 0) {
+      const total = orders.reduce((acc, order) => acc + order.total, 0);
+      setTotalPrice(total.toFixed(2)); 
+    }
+  }, [orders]);
+
+  const handlePopularOrder = async () => {
+    const data = await GetService("http://localhost:3001/orders");
+    setOrders(data.content); 
+    console.log(data.content);
+  };
+
+  useEffect(() => {
+    handlePopularOrder();
+  }, []);
   return (
     <Container> 
       <AdminRowSidebar />
@@ -10,10 +31,10 @@ const AdminOrder = () => {
         <h4 className="me-4">All Orders</h4>
         <div>
           <Badge pill variant="primary" className="me-4 p-2">
-            3 Orders
+            {orders.length} Orders
           </Badge>
           <Badge pill variant="success " className="p-2">
-            $ 5,802.00
+            $ {totalPrice}
           </Badge>
         </div>
       </div>

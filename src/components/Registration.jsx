@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
+import {  PostService} from "../services/index.service";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
     username:"",
-    firstName: "",
-    lastName: "",
+    name: "",
+    surname: "",
     email: "",
     password: "",
   });
@@ -18,9 +19,11 @@ const Registration = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
+    const data = await PostService("http://localhost:3001/auth/register",formData);
+    console.log(data)
    
   };
 
@@ -28,7 +31,7 @@ const Registration = () => {
     <Container className="my-5 d-flex flex-column justify-content-center align-items-center  registration w-50 border rounded">
       <h2 className="mb-5"> Registration</h2>
       <Form onSubmit={handleSubmit} className="w-50 ">
-      <Form.Group controlId="formFirstName">
+      <Form.Group controlId="formname">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
@@ -39,25 +42,25 @@ const Registration = () => {
             required
           />
         </Form.Group>
-        <Form.Group controlId="formFirstName">
+        <Form.Group controlId="formname">
           <Form.Label className="mt-3">First Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter your first name"
-            name="firstName"
-            value={formData.firstName}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             required
           />
         </Form.Group>
 
-        <Form.Group controlId="formLastName">
+        <Form.Group controlId="formsurname">
           <Form.Label className="mt-3">Last Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter your last name"
-            name="lastName"
-            value={formData.lastName}
+            name="surname"
+            value={formData.surname}
             onChange={handleChange}
             required
           />
