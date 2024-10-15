@@ -1,5 +1,4 @@
-const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MjgwNTM0MjIsImV4cCI6MTcyODMxMjYyMiwic3ViIjoiNzE1ZTg3NmEtNTk3ZC00MmJiLWE1NTMtNzRkOWIzNmZiNWE5In0.1k83nCNXqGDDrh0CxOm8mAXOcSUYK71aa08ihPnDyGy_Ymg2Y9dkxqeck74fswFAcrJy3d2XxPuWHjSnkfEdzg";
+let token = localStorage.getItem("token");
 
 const PostService = async (url, formRegister) => {
   try {
@@ -13,19 +12,21 @@ const PostService = async (url, formRegister) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(`Errore: ${errorData.message}`);
-    }else{
-        console.log("Successo nella registrazione");
+      throw new Error(errorData.message);
+    } else {
+      console.log("Successo nella registrazione");
     }
     const data = await response.json();
     // console.log("data "+data);
     return data;
   } catch (error) {
     console.error("Errore durante la registrazione:", error);
+    return "Errore durante la registrazione:", error;
   }
 };
 
 const GetService = async (url) => {
+  token = localStorage.getItem("token");
   try {
     const response = await fetch(url, {
       headers: {
@@ -35,13 +36,14 @@ const GetService = async (url) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(`Errore: ${errorData.message}`);
+      throw new Error(` ${errorData.message}`);
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Errore durante la get:", error);
+    return error.message;
   }
 };
 
@@ -64,6 +66,7 @@ const PutService = async (url, clienti) => {
     return data;
   } catch (error) {
     console.error("Errore durante l'update:", error);
+    return error.message;
   }
 };
 

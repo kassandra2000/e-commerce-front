@@ -74,7 +74,7 @@ const MyNavbar = () => {
             >
               About Us
             </NavLink>
-            <NavLink className="mx-2 nav-link" /*to="/Login"*/ to="/Login">
+            <NavLink className="mx-2 nav-link"  to="/Login">
               {user ? user : "Login"}
             </NavLink>
             <NavLink className="mx-2 nav-link" onClick={handleShow} to="/Cart">

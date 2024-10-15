@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import {  PostService} from "../services/index.service";
+import { PostService } from "../services/index.service";
+import { Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username:"",
+    username: "",
     name: "",
     surname: "",
     email: "",
@@ -19,19 +24,38 @@ const Registration = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    const data = await PostService("http://localhost:3001/auth/register",formData);
-    console.log(data)
-   
+      const data = await PostService(
+        "http://localhost:3001/auth/register",
+        formData
+      );
+      
+
+      if (data.employeeId) {
+        setSuccessMessage("Registrazione effettuata con successo!");
+        setErrorMessage("");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+        console.log(data);
+      } else {
+        setErrorMessage(data.message || "Registrazione fallita. Riprova.");
+        setSuccessMessage("");
+      }
+      // console.log(data);
+    
   };
 
   return (
     <Container className="my-5 d-flex flex-column justify-content-center align-items-center  registration w-50 border rounded">
       <h2 className="mb-5"> Registration</h2>
+      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+
       <Form onSubmit={handleSubmit} className="w-50 ">
-      <Form.Group controlId="formname">
+        <Form.Group controlId="formusername">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"

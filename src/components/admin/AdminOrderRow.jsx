@@ -51,7 +51,7 @@ const AdminOrderRow = () => {
             <td className="d-none d-md-table-cell">Flat Shipping Rate</td>
             <td className="d-none d-sm-table-cell">{order?.dateModified}</td>
             <td className="text-center">
-              <NavLink to={`/OrderDetail/${order.id}`}>
+              <NavLink to={`/OrderDetail/${order?.id}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"

@@ -4,37 +4,46 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserAction } from "../redux/actions";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { GetService, PostService } from "../services/index.service";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password === "password") {
-      setSuccessMessage("Login effettuato con sucesso!");
+    const data = await PostService("http://localhost:3001/auth/login", {
+      email,
+      password,
+    });
+    localStorage.setItem("token", data.accessToken);
 
-      setErrorMessage("");
-      dispatch(setUserAction(username));
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
-    } else if (username === "Admin" && password === "adminpassword") {
-      setSuccessMessage("Login effettuato con sucesso!");
+    const user = await GetService("http://localhost:3001/users/me");
+    // console.log(user?.username);
 
-      setErrorMessage("");
-      dispatch(setUserAction(username));
+    setSuccessMessage("Login effettuato con sucesso!");
+
+    setErrorMessage("");
+    if (user?.role === "ADMIN") {
       setTimeout(() => {
         navigate("/Admin");
       }, 1000);
+    } else if (data.accessToken) {
+      dispatch(setUserAction(user?.username));
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } else {
-      setErrorMessage("Invalid username or password");
+      setErrorMessage("Invalid email or password");
+      setSuccessMessage("");
       dispatch(setUserAction(""));
     }
+
+    console.log("" + errorMessage);
   };
   return (
     <Container className="d-flex justify-content-center align-items-center vh-100">
@@ -47,13 +56,13 @@ const Login = () => {
               <Alert variant="success">{successMessage}</Alert>
             )}
             <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="formUsername">
-                <Form.Label>Username</Form.Label>
+              <Form.Group className="mb-3" controlId="formemail">
+                <Form.Label>email</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </Form.Group>
@@ -72,19 +81,19 @@ const Login = () => {
               </Button>
 
               <div className="text-center mt-4">Or login with</div>
-            
-            <div className="d-flex justify-content-center my-3">
-              <Button variant="outline-primary" className="me-5">
-                <FaFacebook /> Facebook
-              </Button>
-              <Button variant="outline-danger">
-                <FaGoogle /> Google
-              </Button>
-            </div>
 
-            <div className="text-center mt-4">
-              Not a member? <a href="/registration">Sign up now</a>
-            </div>
+              <div className="d-flex justify-content-center my-3">
+                <Button variant="outline-primary" className="me-5">
+                  <FaFacebook /> Facebook
+                </Button>
+                <Button variant="outline-danger">
+                  <FaGoogle /> Google
+                </Button>
+              </div>
+
+              <div className="text-center mt-4">
+                Not a member? <a href="/registration">Sign up now</a>
+              </div>
             </Form>
           </div>
         </Col>
