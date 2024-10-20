@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 const AllProducts = ({ text1, text2 }) => {
   const products = useSelector((state) => state.index.product);
+ 
   return (
     <>
       <h2>{text1}</h2>

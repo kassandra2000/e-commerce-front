@@ -13,7 +13,7 @@ const AdminSidebar = () => (
       <NavLink className="side-bar mb-4 " to="/settings">
         Setting
       </NavLink>
-      <NavLink className="side-bar mb-4 " to="/user">
+      <NavLink className="side-bar mb-4 " to="/Users">
         User
       </NavLink>
     </Nav>

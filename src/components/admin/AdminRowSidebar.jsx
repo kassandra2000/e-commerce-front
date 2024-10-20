@@ -14,7 +14,7 @@ const AdminRowSidebar = () => (
       <NavLink className="side-bar " to="/settings">
         Setting
       </NavLink>
-      <NavLink className="side-bar " to="/user">
+      <NavLink className="side-bar " to="/Users">
         User
       </NavLink>
     </Nav>

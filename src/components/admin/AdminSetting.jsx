@@ -35,7 +35,7 @@ const AdminSetting = () => {
             /></div>
             <Card.Body className="text-center">
               <Card.Title>Edit Product</Card.Title>
-              <Button variant="success" className="custom-button mt-3"onClick={()=> navigate("/ModifyProduct")}>
+              <Button variant="success" className="custom-button mt-3"onClick={()=> navigate("/Product")}>
                 Go to Edit Product
               </Button>
             </Card.Body>
@@ -51,13 +51,33 @@ const AdminSetting = () => {
             /></div>
             <Card.Body className="text-center">
               <Card.Title>Add Admin User</Card.Title>
-              <Button variant="success" className="custom-button mt-3" onClick={()=> navigate("/registration")}>
+              <Button variant="success" className="custom-button mt-3" onClick={()=> navigate("/Users")}>
                 Go to Add Admin
               </Button>
             </Card.Body>
           </Card>
         </Col>
+        
       </Row>
+        <Row >
+       
+        <Col md={4} className="mb-4">
+          <Card className="custom-card">
+           <div className="img">
+            <Card.Img
+              variant="top"
+              src="https://www.fulex.com/wp-content/uploads/2020/07/AdobeStock_293082980-1024x536-1.jpeg"
+              className="custom-image object-fit-cover"
+            /></div>
+            <Card.Body className="text-center">
+              <Card.Title>Edit Order</Card.Title>
+              <Button variant="success" className="custom-button mt-3"onClick={()=> navigate("/Order")}>
+                Go to Edit Order
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+        </Row>
     </Container>
   );
 };

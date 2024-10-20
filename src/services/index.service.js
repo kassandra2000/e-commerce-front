@@ -7,6 +7,7 @@ const PostService = async (url, formRegister) => {
       body: JSON.stringify(formRegister),
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     });
 
@@ -24,6 +25,33 @@ const PostService = async (url, formRegister) => {
     return "Errore durante la registrazione:", error;
   }
 };
+
+const PostImgService = async (url, formRegister) => {
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body:formRegister,
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    } else {
+      console.log("Prodotto creato con successo");
+    }
+    const data = await response.json();
+    // console.log("data "+data);
+    return data;
+  } catch (error) {
+    console.error("Errore durante la creazione del prodotto: ", error);
+    return "Errore durante la creazione del prodotto: ", error;
+  }
+};
+
+
 
 const GetService = async (url) => {
   token = localStorage.getItem("token");
@@ -82,10 +110,14 @@ const DeleteService = async (url) => {
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`Errore: ${errorData.message}`);
-    } else console.log("eliminato con successo");
+    } else {
+      console.log("eliminato con successo");
+      return "eliminato con successo";
+    }
   } catch (error) {
     console.error("Errore durante l'eliminazione':", error);
+    return error;
   }
 };
 
-export { PostService, GetService, PutService, DeleteService };
+export { PostService, GetService, PutService, DeleteService,PostImgService };

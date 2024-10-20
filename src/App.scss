@@ -835,7 +835,11 @@ p {
 }
 
 
+
+
+
 //admin
+
 //diagramma circolari
 .CircularProgressbar text {
   transform: translate(-10px, 5px); /* Adjust these values as needed */
@@ -883,6 +887,8 @@ p {
     background-position: -200% 0;
   }
 }
+
+
 //details admin card
 .job-details-card {
   background-color: #f8f9fa;
@@ -946,6 +952,8 @@ p {
   font-size: 14px;
   color: #888;
 }
+
+
 //admin sidebar
 .admin-sidebar a {
   color: #706f6f;
@@ -1015,3 +1023,10 @@ p {
 }
 
 
+//Admin Modify Product
+
+.admin-modify-product{
+  .img{
+border: none;
+  }
+}

@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
-import { PostImgService, PostService } from "../../services/index.service";
-import { useNavigate } from "react-router-dom";
+import {
+  GetService,
+  PostImgService,
+  PutService,
+} from "../../services/index.service";
+import { useNavigate, useParams } from "react-router-dom";
 import AdminRowSidebar from "./AdminRowSidebar";
 
-const AdminCreateProduct = () => {
+const AdminModifyProduct = () => {
   const [formData, setFormData] = useState({
     title: "",
     subtitle: "",
@@ -15,6 +19,16 @@ const AdminCreateProduct = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+  const [products, setProducts] = useState({
+    title: "",
+    subtitle: "",
+    price: "",
+    stock: "",
+    img: "",
+  });
+  const [imagePreview, setImagePreview] = useState();
+  const { id } = useParams();
+  // console.log(products)
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -22,6 +36,12 @@ const AdminCreateProduct = () => {
       const updatedFormData = new FormData();
       updatedFormData.append("img", files[0]);
       setFormDataImg(updatedFormData);
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImagePreview(event.target.result);
+      };
+      reader.readAsDataURL(files[0]);
     } else {
       setFormData({
         ...formData,
@@ -35,35 +55,60 @@ const AdminCreateProduct = () => {
     console.log("Product Data:", formData);
     console.log("Product Data img:", formDataImg);
 
-    const data = await PostService("http://localhost:3001/products", formData);
+    const data = await PutService(
+      `http://localhost:3001/products/${id}`,
+      formData
+    );
+    console.log(id);
     const dataImg = await PostImgService(
-      `http://localhost:3001/products/${data.productId}/img`,
+      `http://localhost:3001/products/${id}/img`,
       formDataImg
     );
-    console.log("Product Data img:", dataImg);
+    // console.log("Product Data :", data);
+    // console.log("Product Data img:", dataImg.id);
 
-    if (data.productId && dataImg.img) {
-      setSuccessMessage("Creazione prodotto effettuata con successo!");
+    if (data.id && dataImg.id) {
+      setSuccessMessage("Modifica del prodotto effettuata con successo!");
       setErrorMessage("");
       console.log(data.productId);
-      // setTimeout(() => {
-      //   navigate("/settings");
-      // }, 1000);
+      setTimeout(() => {
+        navigate("/settings");
+      }, 1000);
     } else {
-      setErrorMessage(data.message || "Creazione prodotto fallita. Riprova.");
+      setErrorMessage(
+        data.message || "Modifica del prodotto fallita. Riprova."
+      );
       setSuccessMessage("");
     }
   };
+  const handlePopularProduct = async () => {
+    const data = await GetService(`http://localhost:3001/products/${id}`);
+    setImagePreview(data.img || null);
+    setProducts(data);
+    console.log(data);
+    setFormData({
+      title: data.title || "",
+      subtitle: data.subtitle || "",
+      price: data.price || "",
+      stock: data.stock || "",
+    });
+    const updatedFormData = new FormData();
+    updatedFormData.append("img", data.img);
+    setFormDataImg(updatedFormData);
+  };
+  useEffect(() => {
+    handlePopularProduct();
+  }, [id]);
 
   return (
     <>
       <Container>
         <AdminRowSidebar />
-        <Container className="my-3 w-50  border rounded p-5">
+        <Container className="my-3 w-50  border rounded p-5 admin-modify-product">
           {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
           {successMessage && <Alert variant="success">{successMessage}</Alert>}
-          <h3 className="fs-2 mb-4">Create a New Product</h3>
+          <h3 className="fs-2 mb-4">Modify Product</h3>
           <Form onSubmit={handleSubmit}>
             <Form.Group as={Row} controlId="formTitle" className="mb-3">
               <Form.Label column sm="2">
@@ -74,7 +119,7 @@ const AdminCreateProduct = () => {
                   type="text"
                   placeholder="Enter product title"
                   name="title"
-                  value={formData.title}
+                  value={formData?.title}
                   onChange={handleChange}
                   required
                 />
@@ -90,24 +135,40 @@ const AdminCreateProduct = () => {
                   type="text"
                   placeholder="Enter product subtitle"
                   name="subtitle"
-                  value={formData.subtitle}
+                  value={formData?.subtitle}
                   onChange={handleChange}
                   required
                 />
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="formImgUrl" className="mb-3">
+            <Form.Group as={Row} controlId="formImgUrl" className="mb-3 ">
               <Form.Label column sm="2">
                 Image{" "}
               </Form.Label>
-              <Col sm="10">
+              <Col
+                sm="9"
+                className="d-flex align-items-center justify-content-between "
+              >
+                {imagePreview && (
+                  <div className="mb-2">
+                    <img
+                      src={imagePreview}
+                      alt="Product Preview"
+                      style={{
+                        width: "100px",
+                        height: "auto",
+                        marginBottom: "10px",
+                      }}
+                    />
+                  </div>
+                )}
                 <Form.Control
                   type="file"
                   name="img"
-                  
                   onChange={handleChange}
                   required
+                  className="img ms-3 "
                 />
               </Col>
             </Form.Group>
@@ -121,7 +182,7 @@ const AdminCreateProduct = () => {
                   type="number"
                   placeholder="Enter product price"
                   name="price"
-                  value={formData.price}
+                  value={formData?.price}
                   onChange={handleChange}
                   required
                   min="0"
@@ -139,7 +200,7 @@ const AdminCreateProduct = () => {
                   type="number"
                   placeholder="Enter stock"
                   name="stock"
-                  value={formData.stock}
+                  value={formData?.stock}
                   onChange={handleChange}
                   required
                   min="1"
@@ -148,7 +209,7 @@ const AdminCreateProduct = () => {
             </Form.Group>
 
             <Button variant="success" type="submit">
-              Create Product
+              Modify Product
             </Button>
           </Form>
         </Container>
@@ -157,4 +218,4 @@ const AdminCreateProduct = () => {
   );
 };
 
-export default AdminCreateProduct;
+export default AdminModifyProduct;

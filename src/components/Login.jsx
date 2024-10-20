@@ -29,6 +29,7 @@ const Login = () => {
 
     setErrorMessage("");
     if (user?.role === "ADMIN") {
+      dispatch(setUserAction("Admin"));
       setTimeout(() => {
         navigate("/Admin");
       }, 1000);

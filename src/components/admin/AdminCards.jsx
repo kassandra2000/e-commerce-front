@@ -1,11 +1,19 @@
 import { Card, Col, Row } from "react-bootstrap";
 
-const AdminCards = () => {
+const AdminCards = ({ orders, userAdmin, simpleUsers, products }) => {
   const cardData = [
-    { distance: 1650, color: "bg-blue" },
-    { distance: 1239, color: "bg-purple" },
-    { distance: 850, color: "bg-red" },
-    { distance: 1129, color: "bg-orange" },
+    {
+      distance: orders.length,
+      color: "bg-blue",
+      title: "Total Order",
+    },
+    {
+      distance: userAdmin.length,
+      color: "bg-orange",
+      title: "Admin",
+    },
+    { distance: simpleUsers.length, color: "bg-red", title: "Users" },
+    { distance: products.length, color: "bg-purple", title: "Products" },
   ];
 
   return (
@@ -15,7 +23,7 @@ const AdminCards = () => {
           <Card className={`text-white ${card.color} py-5 `}>
             <Card.Body className="py-5">
               <Card.Title className="display-4">{card.distance}</Card.Title>
-              <Card.Text  className="pb-3">Total Distance</Card.Text>
+              <Card.Text className="pb-3">{card.title}</Card.Text>
               <div className="wavy-line"></div>
             </Card.Body>
           </Card>
