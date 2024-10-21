@@ -51,7 +51,24 @@ const PostImgService = async (url, formRegister) => {
   }
 };
 
+const GetProductService = async (url) => {
+  token = localStorage.getItem("token");
+  try {
+    const response = await fetch(url, {
+    });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(` ${errorData.message}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Errore durante la get:", error);
+    return error.message;
+  }
+};
 
 const GetService = async (url) => {
   token = localStorage.getItem("token");
@@ -120,4 +137,4 @@ const DeleteService = async (url) => {
   }
 };
 
-export { PostService, GetService, PutService, DeleteService,PostImgService };
+export { PostService, GetService, PutService, DeleteService,PostImgService,GetProductService };

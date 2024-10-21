@@ -18,7 +18,7 @@ const AdminDashboard = ({ orders, orderPending, orderConfirmed }) => {
             value={orderConfirmed.length + "+"}
             label="Confirm"
             percentage={
-              (orderConfirmed.length / orders.length).toFixed(2) * 100
+              (orderConfirmed.length / orders.length).toFixed(2) * 100||0
             }
             color={"green"}
           />
@@ -28,7 +28,7 @@ const AdminDashboard = ({ orders, orderPending, orderConfirmed }) => {
             icon={<FcEmptyFilter />}
             value={orderPending.length + "+"}
             label="Pending"
-            percentage={(orderPending.length / orders.length).toFixed(2) * 100}
+            percentage={(orderPending.length / orders.length).toFixed(2) * 100 ||0}
             color={"#ffc927"}
           />
         </Col>

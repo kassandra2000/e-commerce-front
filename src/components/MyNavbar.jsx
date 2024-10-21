@@ -8,11 +8,12 @@ import {
   Nav,
   Navbar,
   Alert,
+  NavDropdown,
 } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCartAction } from "../redux/actions";
+import { deleteCartAction, setUserAction } from "../redux/actions";
 import { setCartAction } from "../redux/actions";
 import { deleteOneCartAction } from "../redux/actions";
 
@@ -33,11 +34,18 @@ const MyNavbar = () => {
     setSelected(false);
     setShow(false);
   };
-  const handleOrder = () => {
-    setShow(false);
-    alert("Ordine effettuato con successo");
-  };
   const cart = useSelector((state) => state.index.cart);
+  const handleOrder = () => {
+    
+    if(!user){
+      alert("Devi effettuare l'accesso!!!");
+      
+    }else{
+
+      setShow(false);
+      alert("Ordine effettuato con successo");
+    }
+  };
   const handleDelete = () => {
     if (selected !== null) {
       console.log(cart[selected].id);
@@ -69,14 +77,38 @@ const MyNavbar = () => {
             </NavLink>
             <NavLink
               // onClick={() => setNavLinkShow(false)}
-              className="mx-2 nav-link"
+              className="mx-2 nav-link w-100"
               to="/AboutUs"
             >
               About Us
             </NavLink>
-            <NavLink className="mx-2 nav-link"  to="/Login">
-              {user ? user : "Login"}
-            </NavLink>
+
+            {user ? (
+              <NavDropdown
+                as={NavLink}
+                id="nav-dropdown-dark-example"
+                title={user || "Login"}
+                menuVariant="light"
+                className="ps-2 mx-auto"
+                to="/Login"
+              >
+                <NavDropdown.Item
+                  href="/"
+                  className="ps-1"
+                  onClick={() => {
+                    dispatch(setUserAction(""));
+                    localStorage.removeItem("token");
+                  }}
+                >
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <NavLink className="mx-2 nav-link" to="/Login">
+                {user ? user : "Login"}
+              </NavLink>
+            )}
+
             <NavLink className="mx-2 nav-link" onClick={handleShow} to="/Cart">
               <i className="far fa-shopping-bag"></i>
             </NavLink>
@@ -142,9 +174,7 @@ const MyNavbar = () => {
                         )
                     )
                   ) : !user ? (
-                    <Alert  variant={"secondary"}>
-                      Effettua l`accesso!
-                    </Alert>
+                    <Alert variant={"secondary"}>Effettua l`accesso!</Alert>
                   ) : (
                     <Alert variant={"secondary"}>
                       Non ci sono articoli nel carrello!
@@ -155,13 +185,15 @@ const MyNavbar = () => {
                       Totale:{" "}
                       <h3 className="d-inline-block ">
                         €
-                        {user?cart
-                          .reduce(
-                            (acc, curr) =>
-                              acc + parseFloat(curr.price) * curr.quantity,
-                            0.0
-                          )
-                          .toFixed(2):0}
+                        {user
+                          ? cart
+                              .reduce(
+                                (acc, curr) =>
+                                  acc + parseFloat(curr.price) * curr.quantity,
+                                0.0
+                              )
+                              .toFixed(2)
+                          : 0}
                       </h3>
                     </h4>
                   </Card>

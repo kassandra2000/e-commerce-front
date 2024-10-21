@@ -24,6 +24,7 @@
 .navbar-nav .nav-link.show {
   color: #088178;
 }
+
 .style-nav a:hover,
 .style-nav a.active {
   color: #088178;
@@ -50,6 +51,47 @@
   .style-nav a {
     margin-bottom: 12px;
   }
+}
+//drop navbar
+#nav-dropdown-dark-example:hover::after,
+#nav-dropdown-dark-example::after {
+  display: none;
+}
+#nav-dropdown-dark-example {
+  font-size: 20px;
+  margin-bottom: 0;
+}
+a.mx-auto.nav-item.dropdown.active::after {
+  display: none;
+}
+a.mx-auto.nav-item.dropdown.active:hover::after,
+a.mx-auto.nav-item.show.dropdown.active::after {
+  display: block;
+}
+
+@media screen and (max-width: 991px) {
+  a.mx-auto.nav-item.show.dropdown.active::after {
+    bottom: 50px;
+  }
+
+  .navbar-nav .dropdown-menu a::after,
+  .navbar-nav .dropdown-menu a:hover::after,
+  a.mx-auto.nav-item.show.dropdown.active:hover::after,
+  a.mx-auto.nav-item.show.dropdown.active::after {
+    width: 6vw;
+  }
+  a.mx-auto.nav-item.dropdown.active:hover::after{
+    width:6vw
+  }
+  a.ps-1.dropdown-item{
+    text-align: center;
+    margin: 0;
+    padding-right: 20px;
+  }
+}
+.navbar-nav .dropdown-menu {
+  margin-top: 15px;
+  padding-top: 0;
 }
 
 /* hero */
@@ -725,7 +767,6 @@ p {
   }
 }
 
-
 // details
 .details {
   button {
@@ -775,10 +816,10 @@ p {
 
 //myapp
 .read-more-section {
-  background-image: url("./assets/banner/b19.jpg"); 
+  background-image: url("./assets/banner/b19.jpg");
   background-size: cover;
   background-position: center;
-  height: 50vh; 
+  height: 50vh;
   position: relative;
   display: flex;
   justify-content: center;
@@ -829,14 +870,10 @@ p {
 }
 
 //registration
-.registration{
+.registration {
   // background-color: #dbdbdb;
-    padding: 50px 0;
+  padding: 50px 0;
 }
-
-
-
-
 
 //admin
 
@@ -887,7 +924,6 @@ p {
     background-position: -200% 0;
   }
 }
-
 
 //details admin card
 .job-details-card {
@@ -953,7 +989,6 @@ p {
   color: #888;
 }
 
-
 //admin sidebar
 .admin-sidebar a {
   color: #706f6f;
@@ -1001,8 +1036,6 @@ p {
   left: 0px;
 }
 
-
-
 //table
 
 .table .delete:hover,
@@ -1011,10 +1044,10 @@ p {
   padding-bottom: 3px;
 }
 
-.admin-setting{
-  .img{
+.admin-setting {
+  .img {
     height: 250px;
-    img{
+    img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -1022,11 +1055,10 @@ p {
   }
 }
 
-
 //Admin Modify Product
 
-.admin-modify-product{
-  .img{
-border: none;
+.admin-modify-product {
+  .img {
+    border: none;
   }
 }
