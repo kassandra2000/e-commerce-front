@@ -11,17 +11,20 @@ const AdminCreateProduct = () => {
     price: "",
     stock: "",
   });
-  const [formDataImg, setFormDataImg] = useState(new FormData());
+  const [formDataImg, setFormDataImg] = useState(new FormData()); // inizializza come FormData
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    
     if (name === "img" && files.length > 0) {
+
       const updatedFormData = new FormData();
-      updatedFormData.append("img", files[0]);
-      setFormDataImg(updatedFormData);
+      updatedFormData.append("img", files[0]); 
+      setFormDataImg(updatedFormData); 
     } else {
       setFormData({
         ...formData,
@@ -30,28 +33,38 @@ const AdminCreateProduct = () => {
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Product Data:", formData);
     console.log("Product Data img:", formDataImg);
 
-    const data = await PostService("http://localhost:3001/products", formData);
-    const dataImg = await PostImgService(
-      `http://localhost:3001/products/${data.productId}/img`,
-      formDataImg
-    );
-    console.log("Product Data img:", dataImg);
+    try {
+   
+      const data = await PostService("http://localhost:3001/products/add", formData);
 
-    if (data.productId && dataImg.img) {
-      setSuccessMessage("Creazione prodotto effettuata con successo!");
-      setErrorMessage("");
-      console.log(data.productId);
-      // setTimeout(() => {
-      //   navigate("/settings");
-      // }, 1000);
-    } else {
-      setErrorMessage(data.message || "Creazione prodotto fallita. Riprova.");
-      setSuccessMessage("");
+    
+      if (data.productId) {
+        const dataImg = await PostImgService(
+          `http://localhost:3001/products/${data.productId}/img`,
+          formDataImg 
+        );
+        console.log("Product Data img:", dataImg);
+
+        if (dataImg.img) {
+          setSuccessMessage("Creazione prodotto effettuata con successo!");
+          setErrorMessage("");
+         
+          setTimeout(() => {
+            navigate("/settings");
+          }, 1000);
+        }
+      } else {
+        setErrorMessage(data.message || "Creazione prodotto fallita. Riprova.");
+        setSuccessMessage("");
+      }
+    } catch (error) {
+      setErrorMessage("Errore durante la creazione del prodotto. Riprova.");
     }
   };
 
@@ -59,9 +72,8 @@ const AdminCreateProduct = () => {
     <>
       <Container>
         <AdminRowSidebar />
-        <Container className="my-3 w-50  border rounded p-5">
+        <Container className="my-3 w-50 border rounded p-5">
           {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-
           {successMessage && <Alert variant="success">{successMessage}</Alert>}
           <h3 className="fs-2 mb-4">Create a New Product</h3>
           <Form onSubmit={handleSubmit}>
@@ -99,13 +111,12 @@ const AdminCreateProduct = () => {
 
             <Form.Group as={Row} controlId="formImgUrl" className="mb-3">
               <Form.Label column sm="2">
-                Image{" "}
+                Image
               </Form.Label>
               <Col sm="10">
                 <Form.Control
                   type="file"
                   name="img"
-                  
                   onChange={handleChange}
                   required
                 />

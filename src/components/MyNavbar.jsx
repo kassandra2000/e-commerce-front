@@ -13,12 +13,19 @@ import {
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCartAction, setUserAction } from "../redux/actions";
+import { deleteCartAction, resetCart, setUserAction } from "../redux/actions";
 import { setCartAction } from "../redux/actions";
 import { deleteOneCartAction } from "../redux/actions";
+import {
+  DeleteService,
+  GetService,
+  PostService,
+  PutService,
+} from "../services/index.service";
 
 const MyNavbar = () => {
   const user = useSelector((state) => state.index.user);
+
   // user&&console.log(user)
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -35,26 +42,71 @@ const MyNavbar = () => {
     setShow(false);
   };
   const cart = useSelector((state) => state.index.cart);
-  const handleOrder = () => {
-    
-    if(!user){
-      alert("Devi effettuare l'accesso!!!");
-      
-    }else{
+  // console.log(cart);
 
+  const handleOrder = async () => {
+    if (!user) {
+      alert("Devi effettuare l'accesso!!!");
+    } else {
+      const dataUser = await GetService("http://localhost:3001/users/me");
+      const orderBody = {
+        dateAdded: new Date().toLocaleDateString("en-CA"),
+        status: "pending",
+        total: cart
+          .reduce(
+            (acc, curr) => acc + parseFloat(curr.price) * curr.quantity,
+            0.0
+          )
+          .toFixed(2),
+        userId: dataUser.id,
+        productId: cart.map((item) => item.id),
+      };
+
+      console.log("Body dell'ordine:", orderBody);
+      const data = await PostService("http://localhost:3001/orders", orderBody);
+      console.log(data);
       setShow(false);
       alert("Ordine effettuato con successo");
+      dispatch(resetCart());
     }
   };
-  const handleDelete = () => {
+
+  const handleDeleteOne = async (index) => {
+    console.log(cart);
+    const data = await DeleteService(
+      `http://localhost:3001/users/me/removeCart/${cart[index].id}`
+    );
+    dispatch(deleteOneCartAction(cart[index].id));
+    console.log(data);
+  };
+  const handleDelete = async () => {
     if (selected !== null) {
       console.log(cart[selected].id);
+      const data = await DeleteService(
+        `http://localhost:3001/users/me/removeAllQuantity/${cart[selected].id}`
+      );
+
       dispatch(deleteCartAction(cart[selected].id));
+
       setSelected(null);
     } else {
       alert("Selezionare un elemento per eliminare");
     }
   };
+let dataUser;
+  const findDataUser = async () => {
+    dataUser = await GetService("http://localhost:3001/users/me");
+    dispatch(setCartAction(dataUser.productList));
+    
+
+  };
+ const addToCart = async (index) => {
+  await PostService(`http://localhost:3001/users/me/addCart`, {
+        id: cart[index].id,
+      });
+
+      findDataUser();
+ };
   const handleShow = () => setShow(true);
 
   return (
@@ -89,7 +141,7 @@ const MyNavbar = () => {
                 id="nav-dropdown-dark-example"
                 title={user || "Login"}
                 menuVariant="light"
-                className="ps-2 mx-auto"
+                className="mx-auto active nav-link"
                 to="/Login"
               >
                 <NavDropdown.Item
@@ -155,9 +207,7 @@ const MyNavbar = () => {
                             </div>
                             <span
                               className="span1"
-                              onClick={() =>
-                                dispatch(deleteOneCartAction(product.id))
-                              }
+                              onClick={() => handleDeleteOne(i)}
                             >
                               -
                             </span>
@@ -166,7 +216,7 @@ const MyNavbar = () => {
                             </h6>
                             <span
                               className="span2"
-                              onClick={() => dispatch(setCartAction(product))}
+                              onClick={() => addToCart(i)}
                             >
                               +
                             </span>
@@ -186,8 +236,7 @@ const MyNavbar = () => {
                       <h3 className="d-inline-block ">
                         €
                         {user
-                          ? cart
-                              .reduce(
+                          ? cart?.reduce(
                                 (acc, curr) =>
                                   acc + parseFloat(curr.price) * curr.quantity,
                                 0.0

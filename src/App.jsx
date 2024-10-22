@@ -23,21 +23,21 @@ import AdminCreateProduct from "./components/admin/AdminCreateProduct";
 import AdminProduct from "./components/admin/AdminProduct";
 import AdminModifyProduct from "./components/admin/AdminModifyProduct";
 import AdminUsers from "./components/admin/AdminUsers";
-import { GetProductService, GetService } from "./services/index.service";
+import { GetProductService } from "./services/index.service";
 
 function App() {
   const [products, setProducts] = useState([]);
  const handlePopularProduct = async () => {
     const data = await GetProductService("http://localhost:3001/products");
-    console.log(data)
-    setProducts(data.content);
+    // console.log(data)
+    setProducts(data?.content);
   
-    dispatch(setProductAction(data.content));
+    dispatch(setProductAction(data?.content));
   };
   const dispatch = useDispatch();
+  console.log(products&&products)
   useEffect(() => {
     handlePopularProduct();
-    console.log(products)
   }, []);
   
   return (

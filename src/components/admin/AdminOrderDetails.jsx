@@ -101,7 +101,7 @@ const AdminOrderDetails = () => {
       }, 1000);
     }
   };
-
+console.log(order)
   return (
     <>
       <Container>
