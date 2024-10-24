@@ -8,13 +8,13 @@ const AdminOrderRow = ({orders,setOrders}) => {
   const [errorMessage, setErrorMessage] = useState({});
 
   const handlePopularOrder = async () => {
-    const data = await GetService("http://localhost:3001/orders");
+    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/orders");
     setOrders(data.content);
     console.log(data.content);
   };
 
   const handleDeleteOrder = async (id) => {
-    const data = await DeleteService(`http://localhost:3001/orders/${id}`);
+    const data = await DeleteService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/orders/${id}`);
     if (typeof data == "string") {
       setOrders(orders.filter((order) => order.id !== id));
       setErrorMessage({})

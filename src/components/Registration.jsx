@@ -27,7 +27,7 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
       const data = await PostService(
-        "http://localhost:3001/auth/register",
+        "https://guilty-lonna-kassandra-f5292398.koyeb.app/auth/register",
         formData
       );
       

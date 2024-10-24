@@ -18,7 +18,7 @@ console.log(id)
   const handleCheckPayment = async () => {
     try {
 
-        const dataUser = await GetService("http://localhost:3001/users/me");
+        const dataUser = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me");
 
         const orderBody = {
           dateAdded: new Date().toLocaleDateString("en-CA"),
@@ -36,16 +36,16 @@ console.log(id)
 
 console.log(orderBody)
       const response = await PostService(
-        "http://localhost:3001/orders/check-status",
+        "https://guilty-lonna-kassandra-f5292398.koyeb.app/orders/check-status",
          orderBody 
       );
       setMessage(response.message);
       if (response.message.startsWith("Pagamento")) {
         console.log("ciaooo")
-        const data = await DeleteService("http://localhost:3001/users/me/allCart");
+        const data = await DeleteService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me/allCart");
        console.log(data)
         dispatch(resetCart());
-        const data1 = await GetService("http://localhost:3001/users/me");
+        const data1 = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me");
         console.log(data1)
         console.log(cart)
         setTimeout(() => {navigate("/");}, 1000);

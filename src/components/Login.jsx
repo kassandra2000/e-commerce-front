@@ -16,13 +16,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await PostService("http://localhost:3001/auth/login", {
+    const data = await PostService("https://guilty-lonna-kassandra-f5292398.koyeb.app/auth/login", {
       email,
       password,
     });
     localStorage.setItem("token", data.accessToken);
 
-    const user = await GetService("http://localhost:3001/users/me");
+    const user = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me");
     // console.log(user?.username);
 
     setSuccessMessage("Login effettuato con sucesso!");

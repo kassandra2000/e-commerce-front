@@ -15,12 +15,12 @@ const AllProducts = ({ text1, text2, num1, num2, subtitle }) => {
     let data;
     if (subtitle?.length > 0) {
       data = await GetProductService(
-        `http://localhost:3001/products/bySubtitle?subtitle=${subtitle}`
+        `https://guilty-lonna-kassandra-f5292398.koyeb.app/products/bySubtitle?subtitle=${subtitle}`
       );
       console.log(data);
     } else {
       data = await GetProductService(
-        `http://localhost:3001/products?page=${num1}&size=${num2}`
+        `https://guilty-lonna-kassandra-f5292398.koyeb.app/products?page=${num1}&size=${num2}`
       );
     }
 

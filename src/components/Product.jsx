@@ -14,7 +14,7 @@ const Product = ({ index,products }) => {
   const user = useSelector((state) => state.index.user);
 
   const findDataUser = async () => {
-    const data = await GetService("http://localhost:3001/users/me");
+    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me");
 
     dispatch(setCartAction(data.productList));
   };
@@ -30,7 +30,7 @@ const Product = ({ index,products }) => {
     }
 
     try {
-      await PostService(`http://localhost:3001/users/me/addCart`, {
+      await PostService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me/addCart`, {
         id: products[index]?.id,
       });
 

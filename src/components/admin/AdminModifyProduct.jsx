@@ -56,12 +56,12 @@ const AdminModifyProduct = () => {
     console.log("Product Data img:", formDataImg);
 
     const data = await PutService(
-      `http://localhost:3001/products/${id}`,
+      `https://guilty-lonna-kassandra-f5292398.koyeb.app/products/${id}`,
       formData
     );
     console.log(id);
     const dataImg = await PostImgService(
-      `http://localhost:3001/products/${id}/img`,
+      `https://guilty-lonna-kassandra-f5292398.koyeb.app/products/${id}/img`,
       formDataImg
     );
     // console.log("Product Data :", data);
@@ -82,7 +82,7 @@ const AdminModifyProduct = () => {
     }
   };
   const handlePopularProduct = async () => {
-    const data = await GetService(`http://localhost:3001/products/${id}`);
+    const data = await GetService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/products/${id}`);
     setImagePreview(data.img || null);
     setProducts(data);
     console.log(data);

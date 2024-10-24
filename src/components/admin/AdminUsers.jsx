@@ -13,13 +13,13 @@ const AdminUsers = () => {
   const [successModifyMessage, setSuccessModifyMessage] = useState("");
 
   const handleUsers = async () => {
-    const data = await GetService("http://localhost:3001/users");
+    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users");
     setUsers(data.content);
     console.log(data.content);
   };
 
   const handleDeleteUser = async (id) => {
-    const data = await DeleteService(`http://localhost:3001/users/${id}`);
+    const data = await DeleteService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/users/${id}`);
     if (typeof data == "string") {
       setUsers(users.filter((user) => user.id !== id));
       setErrorMessage({});
@@ -28,7 +28,7 @@ const AdminUsers = () => {
     }
   };
   const handleModifyUserRole = async (id) => {
-    const data = await PutService(`http://localhost:3001/users/${id}/admin`);
+    const data = await PutService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/users/${id}/admin`);
     if (typeof data == "string") {
       setErrorMessage({ data });
       setSuccessModifyMessage("");
