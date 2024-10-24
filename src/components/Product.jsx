@@ -3,27 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDetailsAction, setCartAction } from "../redux/actions";
 import { GetService, PostService } from "../services/index.service";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const Product = ({ index }) => {
-  const products = useSelector((state) => state.index.product);
+const Product = ({ index,products }) => {
+  
   const cart = useSelector((state) => state.index.cart);
-  const [dataUser, setDataUser] = useState({});
 
   const dispatch = useDispatch();
   // console.log(updatedCart)
   const user = useSelector((state) => state.index.user);
-  
+
   const findDataUser = async () => {
-    const data=await GetService("http://localhost:3001/users/me")
-    setDataUser(data);
+    const data = await GetService("http://localhost:3001/users/me");
+
     dispatch(setCartAction(data.productList));
-    // console.log(dataUser)
   };
   useEffect(() => {
     findDataUser();
   }, []);
- 
+
   const updatedCart = cart?.find((item) => item.id === products[index]?.id);
   const addToCart = async () => {
     if (!user) {
@@ -55,7 +53,7 @@ const Product = ({ index }) => {
         </Link>
         <Card.Body className="pb-0">
           <Card.Title className="title">{products[index]?.title}</Card.Title>
-          <Card.Text>{products[index]?.subTitle}</Card.Text>
+          <Card.Text>{products[index]?.subtitle}</Card.Text>
           <div className="star">
             <i className="fas fa-star"></i>
             <i className="fas fa-star"></i>

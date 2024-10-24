@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+
 import AllProducts from "./AllProducts";
 import Banner from "./Banner";
 import BannerDouble from "./BannerDouble";
@@ -8,10 +8,6 @@ import ThreeBanner from "./TreeBanner";
 
 
 const Home = () => {
-
-
- 
-
 
   return (
   <>

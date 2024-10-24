@@ -10,10 +10,10 @@ import {
   Alert,
   NavDropdown,
 } from "react-bootstrap";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCartAction,  setUserAction } from "../redux/actions";
+import { deleteCartAction, setUserAction } from "../redux/actions";
 import { setCartAction } from "../redux/actions";
 import { deleteOneCartAction } from "../redux/actions";
 import {
@@ -24,7 +24,7 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 const MyNavbar = () => {
   const user = useSelector((state) => state.index.user);
-
+  const navigate = useNavigate();
   // user&&console.log(user)
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -66,14 +66,12 @@ const MyNavbar = () => {
           userId: dataUser.id,
           productId: cart.map((item) => item.id),
         };
-        
 
         console.log("Body dell'ordine:", orderBody);
         const data = await PostService(
           "http://localhost:3001/orders",
           orderBody
         );
-
 
         // console.log(await stripePromise)
 
@@ -85,14 +83,12 @@ const MyNavbar = () => {
           sessionId: sessionId,
         });
 
-
         if (error) {
           console.error("Errore durante il reindirizzamento a Stripe:", error);
           alert("Errore durante il reindirizzamento al pagamento.");
         }
 
         setShow(false);
-       
       } catch (error) {
         console.error("Errore durante la creazione dell'ordine:", error);
         alert("Errore durante la creazione dell'ordine.");
@@ -100,7 +96,7 @@ const MyNavbar = () => {
     }
   };
   const handleCheckPayment = async () => {
-    console.log("ciaoooooooooooooooooooooooooooooo")
+    console.log("ciaoooooooooooooooooooooooooooooo");
     const data1 = await PostService(
       "http://localhost:3001/orders/check-status",
       {
@@ -110,8 +106,8 @@ const MyNavbar = () => {
 
     console.log("Status del pagamento:", data1);
   };
-  
-  sessionId&&handleCheckPayment()
+
+  sessionId && handleCheckPayment();
   const handleDeleteOne = async (index) => {
     console.log(cart);
     const data = await DeleteService(
@@ -181,9 +177,18 @@ const MyNavbar = () => {
                 id="nav-dropdown-dark-example"
                 title={user || "Login"}
                 menuVariant="light"
-                className="mx-auto active nav-link"
+                className="mx-auto active nav-link  admin"
                 to="/Login"
               >
+                {user === "Admin" && (
+                  <NavDropdown.Item
+                    className={`ps-1`}
+                    onClick={() => navigate("/admin")}
+                  >
+                    Dashboard
+                  </NavDropdown.Item>
+                )}
+
                 <NavDropdown.Item
                   href="/"
                   className="ps-1"
@@ -240,7 +245,9 @@ const MyNavbar = () => {
                                 variant="top"
                                 src={product.img}
                               />
-                              <Card.Text className="text-black">{product?.subtitle}</Card.Text>
+                              <Card.Text className="text-black">
+                                {product?.subtitle}
+                              </Card.Text>
                               <h4 className="mb-0 text-end ms-auto me-3">
                                 €{product.price}
                               </h4>

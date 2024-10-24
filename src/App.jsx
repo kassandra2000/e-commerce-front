@@ -32,7 +32,7 @@ function App() {
   // const navigate = useNavigate();
   
   const handleUser=async()=>{
-    console.log("1")
+    
     const user = await GetService("http://localhost:3001/users/me");
     
     if(typeof user=="string"){
