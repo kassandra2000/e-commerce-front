@@ -28,7 +28,7 @@ const AdminModifyProduct = () => {
   });
   const [imagePreview, setImagePreview] = useState();
   const { id } = useParams();
-  // console.log(products)
+  console.log(products)
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
