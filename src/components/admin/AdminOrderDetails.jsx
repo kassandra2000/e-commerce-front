@@ -225,7 +225,7 @@ console.log(order)
                               />
                             </Form.Group>
                           </Col>
-                          <Col md={6}>
+                          <Col md={4}>
                             <Form.Group
                               controlId={`itemPrice${index}`}
                               className="mb-3"
@@ -235,6 +235,21 @@ console.log(order)
                                 type="text"
                                 name={`productList.${index}.price`}
                                 value={item?.price || ""}
+                                onChange={(e) => handleInputChange(e, index)}
+                                disabled
+                              />
+                            </Form.Group>
+                          </Col>
+                          <Col md={2}>
+                            <Form.Group
+                              controlId={`itemQuantity${index}`}
+                              className="mb-3"
+                            >
+                              <Form.Label>Quantity</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name={`productList.${index}.quantity`}
+                                value={item?.quantity || ""}
                                 onChange={(e) => handleInputChange(e, index)}
                                 disabled
                               />

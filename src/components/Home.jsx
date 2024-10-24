@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import AllProducts from "./AllProducts";
 import Banner from "./Banner";
 import BannerDouble from "./BannerDouble";
@@ -5,7 +6,14 @@ import Feature from "./Feature";
 import Hero from "./Hero";
 import ThreeBanner from "./TreeBanner";
 
-const Home = () => (
+
+const Home = () => {
+
+
+ 
+
+
+  return (
   <>
     <Hero />
     <Feature />
@@ -17,13 +25,13 @@ const Home = () => (
     />
     <Banner />
     <AllProducts
-    num1={8}
-    num2={16}
+    num1={1}
+    num2={8}
       text1="New Arrivals"
       text2="Summer Collection New Modern Design"
     />
     <BannerDouble />
     <ThreeBanner />
   </>
-);
+)};
 export default Home;

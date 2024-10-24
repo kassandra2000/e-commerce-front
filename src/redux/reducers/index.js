@@ -23,17 +23,10 @@ const mainReducer = (state = initialState, action) => {
       };
 
     case ADD_CART: {
-      if (!state.cart) {
-        return {
-          ...state,
-          cart: [...state.cart, action.payload],
-        };
-      } else {
-        return {
-          ...state,
-          cart: action.payload,
-        };
-      }
+      return {
+        ...state,
+        cart: action.payload,
+      };
     }
     case DELETE_ONE_CART: {
       const productToUpdate = state.cart.find(
@@ -68,35 +61,10 @@ const mainReducer = (state = initialState, action) => {
         cart: state.cart.filter((product) => product.id !== action.payload),
       };
 
-    case DELETE_ONE_CART: {
-      const productToUpdate = state.cart.find(
-        (product) => product.id === action.payload
-      );
-
-      if (productToUpdate) {
-        if (productToUpdate.quantity > 1) {
-          return {
-            ...state,
-            cart: state.cart.map((product) =>
-              product.id === action.payload
-                ? { ...product, quantity: product.quantity - 1 }
-                : product
-            ),
-          };
-        } else {
-          return {
-            ...state,
-            cart: state.cart.filter((product) => product.id !== action.payload),
-          };
-        }
-      }
-
-      return state;
-    }
     case RESET_CART: {
       return {
         ...state,
-        cart: [],
+        cart: []
       };
     }
     case GET_DETAILS:

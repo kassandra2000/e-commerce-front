@@ -13,16 +13,15 @@ import {
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCartAction, resetCart, setUserAction } from "../redux/actions";
+import { deleteCartAction,  setUserAction } from "../redux/actions";
 import { setCartAction } from "../redux/actions";
 import { deleteOneCartAction } from "../redux/actions";
 import {
   DeleteService,
   GetService,
   PostService,
-  PutService,
 } from "../services/index.service";
-
+import { loadStripe } from "@stripe/stripe-js";
 const MyNavbar = () => {
   const user = useSelector((state) => state.index.user);
 
@@ -36,6 +35,7 @@ const MyNavbar = () => {
   const [show, setShow] = useState(false);
   // const [navLinkShow, setNavLinkShow] = useState(true);
   const [selected, setSelected] = useState(null);
+  const [sessionId, setSessionId] = useState("");
 
   const handleClose = () => {
     setSelected(false);
@@ -44,33 +44,74 @@ const MyNavbar = () => {
   const cart = useSelector((state) => state.index.cart);
   // console.log(cart);
 
+  const stripePromise = loadStripe(
+    "pk_test_51QCqRRRo3EN2LzftqpNTJ56Xmys0ND2TbtwViAvGNaVQrMNhfmFXNd4iNczpIzA2OGvkyTihpTyvvMML9D1UAwS500bi7s3GC2"
+  );
   const handleOrder = async () => {
     if (!user) {
       alert("Devi effettuare l'accesso!!!");
     } else {
-      const dataUser = await GetService("http://localhost:3001/users/me");
-      const orderBody = {
-        dateAdded: new Date().toLocaleDateString("en-CA"),
-        status: "pending",
-        total: cart
-          .reduce(
-            (acc, curr) => acc + parseFloat(curr.price) * curr.quantity,
-            0.0
-          )
-          .toFixed(2),
-        userId: dataUser.id,
-        productId: cart.map((item) => item.id),
-      };
+      try {
+        const dataUser = await GetService("http://localhost:3001/users/me");
 
-      console.log("Body dell'ordine:", orderBody);
-      const data = await PostService("http://localhost:3001/orders", orderBody);
-      console.log(data);
-      setShow(false);
-      alert("Ordine effettuato con successo");
-      dispatch(resetCart());
+        const orderBody = {
+          dateAdded: new Date().toLocaleDateString("en-CA"),
+          status: "pending",
+          total: cart
+            .reduce(
+              (acc, curr) => acc + parseFloat(curr.price) * curr.quantity,
+              0.0
+            )
+            .toFixed(2),
+          userId: dataUser.id,
+          productId: cart.map((item) => item.id),
+        };
+        
+
+        console.log("Body dell'ordine:", orderBody);
+        const data = await PostService(
+          "http://localhost:3001/orders",
+          orderBody
+        );
+
+
+        // console.log(await stripePromise)
+
+        const { sessionId } = data;
+        setSessionId(sessionId);
+        const stripe = await stripePromise;
+
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: sessionId,
+        });
+
+
+        if (error) {
+          console.error("Errore durante il reindirizzamento a Stripe:", error);
+          alert("Errore durante il reindirizzamento al pagamento.");
+        }
+
+        setShow(false);
+       
+      } catch (error) {
+        console.error("Errore durante la creazione dell'ordine:", error);
+        alert("Errore durante la creazione dell'ordine.");
+      }
     }
   };
+  const handleCheckPayment = async () => {
+    console.log("ciaoooooooooooooooooooooooooooooo")
+    const data1 = await PostService(
+      "http://localhost:3001/orders/check-status",
+      {
+        sessionId: sessionId,
+      }
+    );
 
+    console.log("Status del pagamento:", data1);
+  };
+  
+  sessionId&&handleCheckPayment()
   const handleDeleteOne = async (index) => {
     console.log(cart);
     const data = await DeleteService(
@@ -85,6 +126,7 @@ const MyNavbar = () => {
       const data = await DeleteService(
         `http://localhost:3001/users/me/removeAllQuantity/${cart[selected].id}`
       );
+      console.log(data);
 
       dispatch(deleteCartAction(cart[selected].id));
 
@@ -93,20 +135,18 @@ const MyNavbar = () => {
       alert("Selezionare un elemento per eliminare");
     }
   };
-let dataUser;
+  let dataUser;
   const findDataUser = async () => {
     dataUser = await GetService("http://localhost:3001/users/me");
     dispatch(setCartAction(dataUser.productList));
-    
-
   };
- const addToCart = async (index) => {
-  await PostService(`http://localhost:3001/users/me/addCart`, {
-        id: cart[index].id,
-      });
+  const addToCart = async (index) => {
+    await PostService(`http://localhost:3001/users/me/addCart`, {
+      id: cart[index].id,
+    });
 
-      findDataUser();
- };
+    findDataUser();
+  };
   const handleShow = () => setShow(true);
 
   return (
@@ -200,8 +240,8 @@ let dataUser;
                                 variant="top"
                                 src={product.img}
                               />
-                              <Card.Text>{product.subTitle}</Card.Text>
-                              <h4 className="mb-0 text-end ms-auto me-5">
+                              <Card.Text className="text-black">{product?.subtitle}</Card.Text>
+                              <h4 className="mb-0 text-end ms-auto me-3">
                                 €{product.price}
                               </h4>
                             </div>
@@ -236,7 +276,8 @@ let dataUser;
                       <h3 className="d-inline-block ">
                         €
                         {user
-                          ? cart?.reduce(
+                          ? cart
+                              ?.reduce(
                                 (acc, curr) =>
                                   acc + parseFloat(curr.price) * curr.quantity,
                                 0.0
@@ -252,7 +293,10 @@ let dataUser;
                 <Button
                   variant="secondary"
                   className="button"
-                  onClick={handleOrder}
+                  onClick={() => {
+                    handleOrder();
+                    sessionId && handleCheckPayment();
+                  }}
                 >
                   Procedi all ordine
                 </Button>

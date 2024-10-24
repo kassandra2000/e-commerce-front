@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import MyNavbar from "./components/MyNavbar";
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -11,7 +11,7 @@ import Shop from "./components/Shop";
 import Details from "./components/Details";
 import MyApp from "./components/MyApp";
 import { useDispatch } from "react-redux";
-import { setProductAction } from "./redux/actions";
+import { setProductAction, setUserAction } from "./redux/actions";
 // import productJson from "../product.json";
 import { useEffect, useState } from "react";
 import AdminHome from "./components/admin/AdminHome";
@@ -23,9 +23,27 @@ import AdminCreateProduct from "./components/admin/AdminCreateProduct";
 import AdminProduct from "./components/admin/AdminProduct";
 import AdminModifyProduct from "./components/admin/AdminModifyProduct";
 import AdminUsers from "./components/admin/AdminUsers";
-import { GetProductService } from "./services/index.service";
+import { GetProductService, GetService} from "./services/index.service";
+import SuccessPage from "./components/SuccessPage";
+
+
 
 function App() {
+  // const navigate = useNavigate();
+  
+  const handleUser=async()=>{
+    console.log("1")
+    const user = await GetService("http://localhost:3001/users/me");
+    
+    if(typeof user=="string"){
+      console.log(user)
+      dispatch(setUserAction(""));
+      localStorage.removeItem("token");
+      // navigate("/login")
+    
+    }
+  }
+ 
   const [products, setProducts] = useState([]);
  const handlePopularProduct = async () => {
     const data = await GetProductService("http://localhost:3001/products");
@@ -38,6 +56,7 @@ function App() {
   console.log(products&&products)
   useEffect(() => {
     handlePopularProduct();
+    handleUser();
   }, []);
   
   return (
@@ -46,6 +65,7 @@ function App() {
         <MyNavbar />
 
         <Routes>
+
           <Route path="/" element={<Home />} />
           <Route path="/Shop" element={<Shop />} />
           <Route path="/Details" element={<Details />} />
@@ -61,6 +81,7 @@ function App() {
           <Route path="/CreateProduct" element={<AdminCreateProduct />} />
           <Route path="/ModifyProduct/:id" element={<AdminModifyProduct />} />
           <Route path="/Users" element={<AdminUsers />} />
+          <Route path="/Success" element={<SuccessPage/>} />
           <Route path="*" element={<Home />} />
         </Routes>
         <NewsLetter />
