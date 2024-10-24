@@ -52,7 +52,7 @@ const MyNavbar = () => {
       alert("Devi effettuare l'accesso!!!");
     } else {
       try {
-        const dataUser = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me");
+        const dataUser = await GetService("http://localhost:3001/users/me");
 
         const orderBody = {
           dateAdded: new Date().toLocaleDateString("en-CA"),
@@ -69,7 +69,7 @@ const MyNavbar = () => {
 
         console.log("Body dell'ordine:", orderBody);
         const data = await PostService(
-          "https://guilty-lonna-kassandra-f5292398.koyeb.app/orders",
+          "http://localhost:3001/orders",
           orderBody
         );
 
@@ -98,7 +98,7 @@ const MyNavbar = () => {
   const handleCheckPayment = async () => {
     console.log("ciaoooooooooooooooooooooooooooooo");
     const data1 = await PostService(
-      "https://guilty-lonna-kassandra-f5292398.koyeb.app/orders/check-status",
+      "http://localhost:3001/orders/check-status",
       {
         sessionId: sessionId,
       }
@@ -111,7 +111,7 @@ const MyNavbar = () => {
   const handleDeleteOne = async (index) => {
     console.log(cart);
     const data = await DeleteService(
-      `https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me/removeCart/${cart[index].id}`
+      `http://localhost:3001/users/me/removeCart/${cart[index].id}`
     );
     dispatch(deleteOneCartAction(cart[index].id));
     console.log(data);
@@ -120,7 +120,7 @@ const MyNavbar = () => {
     if (selected !== null) {
       console.log(cart[selected].id);
       const data = await DeleteService(
-        `https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me/removeAllQuantity/${cart[selected].id}`
+        `http://localhost:3001/users/me/removeAllQuantity/${cart[selected].id}`
       );
       console.log(data);
 
@@ -133,11 +133,11 @@ const MyNavbar = () => {
   };
   let dataUser;
   const findDataUser = async () => {
-    dataUser = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me");
+    dataUser = await GetService("http://localhost:3001/users/me");
     dispatch(setCartAction(dataUser.productList));
   };
   const addToCart = async (index) => {
-    await PostService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me/addCart`, {
+    await PostService(`http://localhost:3001/users/me/addCart`, {
       id: cart[index].id,
     });
 

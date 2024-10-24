@@ -34,7 +34,7 @@ const AdminOrderDetails = () => {
   const navigate = useNavigate();
 
   const handleModifyOrder = async () => {
-    data = await GetService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/orders/${id}`);
+    data = await GetService(`http://localhost:3001/orders/${id}`);
     if (typeof data === "string") {
       setErrorMessage(data);
     } else {
@@ -85,7 +85,7 @@ const AdminOrderDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const dataModified = await PutService(
-      `https://guilty-lonna-kassandra-f5292398.koyeb.app/orders/${id}`,
+      `http://localhost:3001/orders/${id}`,
       transformedOrder
     );
     console.log(dataModified);

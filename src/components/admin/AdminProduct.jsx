@@ -9,12 +9,12 @@ const AdminProduct = () => {
   const [errorMessage, setErrorMessage] = useState({});
 
   const handlePopularProduct = async () => {
-    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/products");
+    const data = await GetService("http://localhost:3001/products");
     setProducts(data.content);
     console.log(data.content);
   };
   const handleDeleteProduct = async (id) => {
-    const data = await DeleteService(`https://guilty-lonna-kassandra-f5292398.koyeb.app/products/${id}`);
+    const data = await DeleteService(`http://localhost:3001/products/${id}`);
     if (typeof data == "string") {
       setProducts(products.filter((order) => order.id !== id));
       setErrorMessage({});

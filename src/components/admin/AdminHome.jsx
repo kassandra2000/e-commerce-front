@@ -13,17 +13,17 @@ const AdminHome = () => {
   const [users, setUsers] = useState([]);
 
   const handlePopularOrder = async () => {
-    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/orders");
+    const data = await GetService("http://localhost:3001/orders");
     setOrders(data.content);
     // console.log(data.content);
   };
   const handlePopularProduct = async () => {
-    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/products");
+    const data = await GetService("http://localhost:3001/products");
     setProducts(data.content);
     console.log(data.content);
   };
   const handleUsers = async () => {
-    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users");
+    const data = await GetService("http://localhost:3001/users");
     setUsers(data.content);
     console.log(data.content);
   };

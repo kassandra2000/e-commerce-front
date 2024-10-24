@@ -33,7 +33,7 @@ function App() {
   
   const handleUser=async()=>{
     
-    const user = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/users/me");
+    const user = await GetService("http://localhost:3001/users/me");
     
     if(typeof user=="string"){
       console.log(user)
@@ -46,7 +46,7 @@ function App() {
  
   const [products, setProducts] = useState([]);
  const handlePopularProduct = async () => {
-    const data = await GetProductService("https://guilty-lonna-kassandra-f5292398.koyeb.app/products");
+    const data = await GetProductService("http://localhost:3001/products");
     // console.log(data)
     setProducts(data?.content);
   

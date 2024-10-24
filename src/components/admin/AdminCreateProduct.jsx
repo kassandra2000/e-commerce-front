@@ -41,12 +41,12 @@ const AdminCreateProduct = () => {
 
     try {
    
-      const data = await PostService("https://guilty-lonna-kassandra-f5292398.koyeb.app/products/add", formData);
+      const data = await PostService("http://localhost:3001/products/add", formData);
 
     
       if (data.productId) {
         const dataImg = await PostImgService(
-          `https://guilty-lonna-kassandra-f5292398.koyeb.app/products/${data.productId}/img`,
+          `http://localhost:3001/products/${data.productId}/img`,
           formDataImg 
         );
         console.log("Product Data img:", dataImg);

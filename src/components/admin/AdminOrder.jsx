@@ -18,7 +18,7 @@ const AdminOrder = () => {
   }, [orders]);
 
   const handlePopularOrder = async () => {
-    const data = await GetService("https://guilty-lonna-kassandra-f5292398.koyeb.app/orders");
+    const data = await GetService("http://localhost:3001/orders");
     setOrders(data.content);
     console.log(data.content);
   };
