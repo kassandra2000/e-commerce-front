@@ -2,9 +2,10 @@ import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import f3 from "../assets/products/f3.jpg";
 import f4 from "../assets/products/f4.jpg";
 import f5 from "../assets/products/f5.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartAction } from "../redux/actions";
+import { GetService, PostService } from "../services/index.service";
 const Details = () => {
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState(false);
@@ -14,12 +15,23 @@ const Details = () => {
   const images = [details?.img, f3, f4, f5];
   const user = useSelector((state) => state.index.user);
 
+  const findDataUser = async () => {
+    const data = await GetService("http://localhost:3001/users/me");
+
+    dispatch(setCartAction(data.productList));
+  };
+  useEffect(() => {
+    findDataUser();
+  }, []);
+
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
   };
-  const addToCart = () => {
-   details&&user &&dispatch(setCartAction(details));
-    user?alert("aggiunto carello"):alert("esegui l'accesso!");
+  const addToCart = async () => {
+    await PostService(`http://localhost:3001/users/me/addCart`, {
+      id: details?.id,
+    });
+    user ? alert("aggiunto carello") : alert("esegui l'accesso!");
   };
   return (
     <Container className="my-5 details">
